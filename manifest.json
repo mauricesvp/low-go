@@ -1,0 +1,34 @@
+{
+  "manifest_version": 2,
+  "name": "Low-Go",
+  "version": "1.0",
+  "browser_action": {
+    "default_icon": "icons/icons8-empty-32.png",
+    "default_title": "Low-Go",
+    "default_popup": "options.html"
+  },
+
+  "description": "Remove Recommended Videos with low Views",
+
+  "icons": {
+    "32": "icons/icons8-empty-32.png"
+  },
+
+  "content_scripts": [
+    {
+      "matches": [
+        "https://www.youtube.com/",
+        "https://www.youtube.com/watch?*"
+      ],
+      "js": ["low-go.js"]
+    }
+  ],
+
+  "permissions": ["storage"],
+
+  "browser_specific_settings": {
+    "gecko": {
+      "id": "{ae5fda56-a3af-48f8-9c18-2da174182781}"
+    }
+  }
+}
