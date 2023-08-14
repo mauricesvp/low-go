@@ -213,7 +213,7 @@ function updateObservers() {
         observer.observe(recommendedVideos, config);
         return;
     }
-    window.setTimeout(addObservers, 100);
+    window.setTimeout(updateObservers, 100);
 }
 
 function main() {
