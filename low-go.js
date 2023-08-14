@@ -200,7 +200,10 @@ function observerCallback(mutationList, observer) {
     removeVideosFromElement(mutationList[0].target);
 }
 
-function addObservers() {
+function updateObservers() {
+    if (observer !== undefined) {
+        observer.disconnect();
+    }
     let recommendedVideos = document.querySelector("div#primary ytd-rich-grid-renderer div#contents");
     let relatedVideos = document.querySelector("div#related div#contents");
     if (relatedVideos) {
@@ -210,7 +213,7 @@ function addObservers() {
         observer.observe(recommendedVideos, config);
         return;
     }
-    window.setTimeout(addObservers, 200);
+    window.setTimeout(addObservers, 100);
 }
 
 function main() {
@@ -231,9 +234,15 @@ function main() {
     if (parse_views === undefined) {
         throw new Error("Language '" + lang + "' not supported.");
     }
+    // Run once immediately to remove videos that are already on the page
+    removeVideosFromElement(document.body);
     observer = new MutationObserver(observerCallback);
 
-    addObservers();
+    updateObservers();
+
+    window.addEventListener("popstate", (event) => {
+        updateObservers();
+    });
 }
 
 main();
