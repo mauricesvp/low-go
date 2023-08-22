@@ -1,0 +1,28 @@
+@import "bulma.css";
+
+html {
+    overflow-y: auto;
+}
+
+body {
+    font-family: "Segoe UI", "Helvetica Neue", Helvetica, Arial, sans-serif;
+    max-width: 300px;
+}
+
+#viewCount {
+    width: 33%;
+    max-width: 55px;
+}
+
+.hero-body .label {
+    margin-bottom: 2em;
+}
+
+.hero-body .control {
+    margin: 1em 0;
+}
+
+.hero-foot {
+    text-align: right;
+    margin: 0 0.5em;
+}

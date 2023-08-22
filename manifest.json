@@ -5,7 +5,7 @@
     "browser_action": {
         "default_icon": "icons/icons8-empty-32.png",
         "default_title": "Low-Go",
-        "default_popup": "options.html"
+        "default_popup": "popup/popup.html"
     },
 
     "description": "Remove Recommended Videos with low Views",

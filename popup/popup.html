@@ -1,0 +1,45 @@
+<!doctype html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8" />
+        <link rel="stylesheet" href="popup.css" />
+    </head>
+
+    <body class="has-background-light">
+        <section class="hero is-small">
+            <div class="hero-head has-text-centered">
+                <p class="title">Low-Go</p>
+            </div>
+            <div class="hero-body has-text-centered">
+                <form class="form">
+                    <label class="label">Current Limit: &#x3c;</label>
+                    <div class="control">
+                        <input
+                            class="input is-small"
+                            type="text"
+                            min="0"
+                            id="viewCount"
+                            name="viewCount"
+                            inputmode="numeric"
+                            pattern="\d+"
+                        />
+                        <button class="button is-small" type="submit">Update</button>
+                    </div>
+                </form>
+            </div>
+            <div class="hero-foot">
+                <a
+                    class="button is-ghost is-small"
+                    href="https://addons.mozilla.org/de/firefox/addon/low-go/"
+                    target="_blank"
+                    >Rate⭐</a
+                >
+                <a class="button is-ghost is-small" href="https://github.com/mauricesvp/low-go" target="_blank"
+                    >GitHub📝</a
+                >
+            </div>
+        </section>
+
+        <script src="popup.js"></script>
+    </body>
+</html>
