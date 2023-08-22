@@ -1,6 +1,9 @@
 // All recommended videos with less than <LIMIT> views will be removed.
 // This limit can be changed in the extension settings.
 let LIMIT = 100;
+let RATE_LIMIT = 100; // minimum delay between calls in ms
+let parse_views;
+let last = +new Date();
 
 let supported_languages = {
     "de-DE": deDE_parseViews,
@@ -16,12 +19,19 @@ let supported_languages = {
     "pt-PT": ptPT_parseViews,
 };
 
-let parse_views;
-let viewCount;
-let observer;
-const config = { attributes: false, childList: true, subtree: false };
+function checkURL() {
+    let url = window.location.href;
+    if (url === "https://www.youtube.com/") return true;
+    if (url.startsWith("https://www.youtube.com/watch?")) return true;
+    return false;
+}
 
-function removeVideosFromElement(node) {
+function removeVideosFromElement() {
+    const now = +new Date();
+    if (now - last <= RATE_LIMIT) return;
+    last = now;
+
+    node = document.body;
     let elements = Array.prototype.slice.call(node.getElementsByTagName("ytd-rich-item-renderer"), 0);
     let elements_ = Array.prototype.slice.call(node.getElementsByTagName("ytd-compact-video-renderer"), 0);
     let allElements = elements.concat(elements_);
@@ -42,7 +52,7 @@ function removeVideosFromElement(node) {
         if (title === null) {
             title = allElements[i].querySelector("span#video-title");
         }
-        console.log("(Low-Go) Removing: " + title.innerText + " (" + viewCountVideo + " views).");
+        console.log("(Low-Go) Removing: " + title.innerText.trim() + " (" + viewCountVideo + " views).");
         allElements[i].parentNode.removeChild(allElements[i]);
     }
 }
@@ -196,31 +206,11 @@ function ptPT_parseViews(views) {
 
 // ------------------------------
 
-function observerCallback(mutationList, observer) {
-    removeVideosFromElement(mutationList[0].target);
-}
-
-function updateObservers() {
-    if (observer !== undefined) {
-        observer.disconnect();
-    }
-    let recommendedVideos = document.querySelector("div#primary ytd-rich-grid-renderer div#contents");
-    let relatedVideos = document.querySelector("div#related div#contents");
-    if (relatedVideos) {
-        observer.observe(relatedVideos, config);
-        return;
-    } else if (recommendedVideos) {
-        observer.observe(recommendedVideos, config);
-        return;
-    }
-    window.setTimeout(updateObservers, 100);
-}
-
 function main() {
     if (typeof window === "undefined") {
         return;
     }
-    viewCount = browser.storage.local.get("viewCount");
+    let viewCount = browser.storage.local.get("viewCount");
     viewCount.then((res) => {
         if (res.viewCount === undefined) {
             return;
@@ -234,14 +224,14 @@ function main() {
     if (parse_views === undefined) {
         throw new Error("Language '" + lang + "' not supported.");
     }
-    // Run once immediately to remove videos that are already on the page
-    removeVideosFromElement(document.body);
-    observer = new MutationObserver(observerCallback);
 
-    updateObservers();
+    const config = { attributes: false, childList: true, subtree: true };
+    let observer = new MutationObserver(removeVideosFromElement);
 
-    window.addEventListener("popstate", (event) => {
-        updateObservers();
+    document.body.addEventListener("yt-navigate-finish", () => {
+        observer.disconnect();
+        if (!checkURL()) return;
+        observer.observe(document.body, config);
     });
 }
 
