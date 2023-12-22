@@ -1,6 +1,7 @@
 // All recommended videos with less than <LIMIT> views will be removed.
 // This limit can be changed in the extension settings.
 let LIMIT = 100;
+let START_ON_ANY_SUBDOMAIN = true;
 let RATE_LIMIT = 100; // minimum delay between calls in ms
 let parse_views;
 let last = +new Date();
@@ -27,6 +28,7 @@ function checkURL() {
 }
 
 function removeVideosFromElement() {
+    if (START_ON_ANY_SUBDOMAIN && !checkURL()) return;
     const now = +new Date();
     if (now - last <= RATE_LIMIT) return;
     last = now;
@@ -218,6 +220,14 @@ function main() {
         LIMIT = res.viewCount;
     });
 
+    let startOnAnySubdomain = browser.storage.local.get("startOnAnySubdomain");
+    startOnAnySubdomain.then((res) => {
+        if (res.startOnAnySubdomain === undefined) {
+            return;
+        }
+        START_ON_ANY_SUBDOMAIN = res.startOnAnySubdomain;
+    });
+
     let lang = document.documentElement.lang;
     parse_views = supported_languages[lang];
 
@@ -230,7 +240,7 @@ function main() {
 
     document.body.addEventListener("yt-navigate-finish", () => {
         observer.disconnect();
-        if (!checkURL()) return;
+        if (!START_ON_ANY_SUBDOMAIN && !checkURL()) return;
         observer.observe(document.body, config);
     });
 }
