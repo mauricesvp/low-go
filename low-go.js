@@ -210,6 +210,8 @@ function ptPT_parseViews(views) {
 
 function ruRU_parseViews(views) {
     views = views.replace(" просмотров", "");
+    views = views.replace(".", "");
+    views = views.replace(",", ".");
     let factor = 1;
     if (views.includes("тыс")) {
         views = views.replace("тыс", "");
@@ -226,6 +228,8 @@ function ruRU_parseViews(views) {
 
 function ukUA_parseViews(views) {
     views = views.replace(" переглядів", "");
+    views = views.replace(".", "");
+    views = views.replace(",", ".");
     let factor = 1;
     if (views.includes("тис")) {
         views = views.replace("тис", "");

@@ -141,10 +141,10 @@ function test_ptBR_parseViews() {
 function test_ruRU_parseViews() {
     let testCases = {
         "213 просмотров": 213,
-        "1.5 тыс. просмотров": 1500,
+        "1,5 тыс. просмотров": 1500,
         "108 тыс. просмотров": 108000,
-        "4.3 млн. просмотров": 4300000,
-        "4.8 млрд. просмотров": 4800000000,
+        "4,3 млн просмотров": 4300000,
+        "4,8 млрд просмотров": 4800000000,
     };
     for (let [input, expected] of Object.entries(testCases)) {
         let actual = ruRU_parseViews(input);
@@ -155,10 +155,10 @@ function test_ruRU_parseViews() {
 function test_ukUA_parseViews() {
     let testCases = {
         "213 переглядів": 213,
-        "1.5 тис. переглядів": 1500,
+        "1,5 тис. переглядів": 1500,
         "108 тис. переглядів": 108000,
-        "4.3 млн. переглядів": 4300000,
-        "4.8 млрд. переглядів": 4800000000,
+        "4,3 млн переглядів": 4300000,
+        "4,8 млрд переглядів": 4800000000,
     };
     for (let [input, expected] of Object.entries(testCases)) {
         let actual = ukUA_parseViews(input);
