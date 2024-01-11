@@ -18,6 +18,8 @@ let supported_languages = {
     "nl-NL": nlNL_parseViews,
     "pt-BR": ptBR_parseViews,
     "pt-PT": ptPT_parseViews,
+    "ru-RU": ruRU_parseViews,
+    "uk-UA": ukUA_parseViews,
 };
 
 function checkURL() {
@@ -206,6 +208,42 @@ function ptPT_parseViews(views) {
     return parseFloat(views) * factor;
 }
 
+function ruRU_parseViews(views) {
+    views = views.replace(" просмотров", "");
+    views = views.replace(".", "");
+    views = views.replace(",", ".");
+    let factor = 1;
+    if (views.includes("тыс")) {
+        views = views.replace("тыс", "");
+        factor = 1000;
+    } else if (views.includes("млн")) {
+        views = views.replace("млн", "");
+        factor = 1000000;
+    } else if (views.includes("млрд")) {
+        views = views.replace("млрд", "");
+        factor = 1000000000;
+    }
+    return parseFloat(views) * factor;
+}
+
+function ukUA_parseViews(views) {
+    views = views.replace(" переглядів", "");
+    views = views.replace(".", "");
+    views = views.replace(",", ".");
+    let factor = 1;
+    if (views.includes("тис")) {
+        views = views.replace("тис", "");
+        factor = 1000;
+    } else if (views.includes("млн")) {
+        views = views.replace("млн", "");
+        factor = 1000000;
+    } else if (views.includes("млрд")) {
+        views = views.replace("млрд", "");
+        factor = 1000000000;
+    }
+    return parseFloat(views) * factor;
+}
+
 // ------------------------------
 
 function main() {
@@ -258,5 +296,7 @@ if (typeof window === "undefined") {
         nlNL_parseViews,
         ptBR_parseViews,
         ptPT_parseViews,
+        ruRU_parseViews,
+        ukUA_parseViews,
     };
 }

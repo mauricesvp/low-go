@@ -8,6 +8,8 @@ const {
     ptPT_parseViews,
     ptBR_parseViews,
     nlNL_parseViews,
+    ruRU_parseViews,
+    ukUA_parseViews,
 } = require("./low-go");
 
 function test_deDE_parseViews() {
@@ -136,6 +138,34 @@ function test_ptBR_parseViews() {
     }
 }
 
+function test_ruRU_parseViews() {
+    let testCases = {
+        "213 просмотров": 213,
+        "1,5 тыс. просмотров": 1500,
+        "108 тыс. просмотров": 108000,
+        "4,3 млн просмотров": 4300000,
+        "4,8 млрд просмотров": 4800000000,
+    };
+    for (let [input, expected] of Object.entries(testCases)) {
+        let actual = ruRU_parseViews(input);
+        console.assert(actual === expected, `ruRU_parseViews failed for ${input} (${expected} should be ${actual})`);
+    }
+}
+
+function test_ukUA_parseViews() {
+    let testCases = {
+        "213 переглядів": 213,
+        "1,5 тис. переглядів": 1500,
+        "108 тис. переглядів": 108000,
+        "4,3 млн переглядів": 4300000,
+        "4,8 млрд переглядів": 4800000000,
+    };
+    for (let [input, expected] of Object.entries(testCases)) {
+        let actual = ukUA_parseViews(input);
+        console.assert(actual === expected, `ukUA_parseViews failed for ${input} (${expected} should be ${actual})`);
+    }
+}
+
 function test() {
     test_deDE_parseViews();
     test_en_parseViews();
@@ -146,6 +176,8 @@ function test() {
     test_nlNL_parseViews();
     test_ptPT_parseViews();
     test_ptBR_parseViews();
+    test_ruRU_parseViews();
+    test_ukUA_parseViews();
 }
 
 test();
